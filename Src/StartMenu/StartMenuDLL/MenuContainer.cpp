@@ -1453,21 +1453,57 @@ void CMenuContainer::AddStandardItems( void )
 					item.name=FindTranslation(L"Menu.RestartUpdate",L"Update and restart");
 				else
 				{
-					CString labelText = pStdItem->label;
+					CString labelTextBold = pStdItem->label;
 
-					// Check for `bold` markers at the start and end of the label text
-					int startPos = labelText.Find(L"bold");
+					// Check for "bold"`" markers at the start of the label text
+					int startPos = labelTextBold.Find(L"bold");
 					
 					if (startPos != -1)
 					{
-						labelText.Delete(startPos, 4);  // Remove opening `bold`
-						item.name = labelText;
+						labelTextBold.Delete(startPos, 4);  // Remove opening `bold`
+						item.name = labelTextBold;
 						item.isBold = true;
 					}
 					else
 					{
 						item.isBold = false;
 						item.name = pStdItem->label;
+					}
+
+
+					CString labelTextInternet = item.name;
+
+					// As with previous, check for "neticon" marker, but at the end of the label text
+					int endPos = labelTextInternet.Find(L"neticon");
+
+					if (endPos != -1)
+					{
+						labelTextInternet.Delete(endPos, 7);  // Remove ending "neticon" text
+						item.name = labelTextInternet;
+						item.secondaryLabel = _T("Internet");
+						item.hasInternetSecondLabel = true;
+					}
+					else
+					{
+						item.secondaryLabel = _T("");
+						item.hasInternetSecondLabel = false;
+					}
+
+					CString labelTextEmail = item.name;
+
+					int endPos2 = labelTextEmail.Find(L"yesmail");
+
+					if (endPos2 != -1)
+					{
+						labelTextEmail.Delete(endPos2, 7);  // Remove ending "neticon" text
+						item.name = labelTextEmail;
+						item.secondaryLabelEmail = _T("E-mail");
+						item.hasEmailSecondLabel = true;
+					}
+					else
+					{
+						item.secondaryLabelEmail = _T("");
+						item.hasEmailSecondLabel = false;
 					}
 				}
 			}
