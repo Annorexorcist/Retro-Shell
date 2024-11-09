@@ -1099,7 +1099,7 @@ void CMenuContainer::AddStandardItems( void )
 			int stdOptions=GetStdOptions(pStdItem->id);
 			if (!(stdOptions&MENU_ENABLED)) continue;
 
-			if (s_bWin7Style && m_bSubMenu && pStdItem->command && (pStdItem->id==MENU_SWITCHUSER || pStdItem->id==MENU_SECURITY || pStdItem->id==MENU_LOGOFF || pStdItem->id==MENU_LOCK || pStdItem->id==MENU_DISCONNECT
+			if (!s_bWin7Style && m_bSubMenu && pStdItem->command && (pStdItem->id==MENU_SWITCHUSER || pStdItem->id==MENU_SECURITY || pStdItem->id==MENU_LOGOFF || pStdItem->id==MENU_LOCK || pStdItem->id==MENU_DISCONNECT
 				|| pStdItem->id==MENU_UNDOCK || pStdItem->id==MENU_RESTART || pStdItem->id==MENU_SLEEP || pStdItem->id==MENU_HIBERNATE || pStdItem->id==MENU_SHUTDOWN
 				|| pStdItem->id==MENU_RESTART_NOUPDATE || pStdItem->id==MENU_SHUTDOWN_NOUPDATE))
 			{
@@ -3374,14 +3374,14 @@ void CMenuContainer::InitWindowInternal( bool bDontShrink, const POINT &corner, 
 			{
 				item.drawType=(item.bSplit)?MenuSkin::LIST_SEPARATOR_SPLIT:MenuSkin::LIST_SEPARATOR;
 			}
-			else if (s_bWin7Style && item.id==MENU_PROGRAMS)
+			else if (!s_bWin7Style && item.id==MENU_PROGRAMS)
 			{
 				if (GetSettingInt(L"ProgramsStyle")==PROGRAMS_INLINE)
 					item.drawType=item.bNew?MenuSkin::PROGRAMS_BUTTON_NEW:MenuSkin::PROGRAMS_BUTTON;
 				else
-					item.drawType=item.bNew?MenuSkin::PROGRAMS_CASCADING_NEW:MenuSkin::PROGRAMS_CASCADING;
+					item.drawType=item.bNew?MenuSkin::PROGRAMS_CASCADING_NEW:MenuSkin::PROGRAMS_BUTTON;
 			}
-			else if (s_bWin7Style && m_bTwoColumns && (s_MenuMode==MODE_SEARCH || s_MenuMode==MODE_JUMPLIST) && i>=m_OriginalCount)
+			else if (m_bTwoColumns && (s_MenuMode==MODE_SEARCH || s_MenuMode==MODE_JUMPLIST) && i>=m_OriginalCount)
 			{
 				if (item.id==MENU_SEPARATOR)
 					item.drawType=MenuSkin::LIST_SEPARATOR;
@@ -3486,7 +3486,7 @@ void CMenuContainer::InitWindowInternal( bool bDontShrink, const POINT &corner, 
 						settings.arrPadding.cx+settings.arrPadding.cy+settings.arrSize.cx;
 				h=s_Skin.Shutdown_padding.top+s_Skin.Shutdown_padding.bottom+settings.itemHeight;
 			}
-			else if (s_bWin7Style && item.id==MENU_PROGRAMS)
+			else if (item.id==MENU_PROGRAMS)
 			{
 				if (GetSettingInt(L"ProgramsStyle")!=PROGRAMS_HIDDEN)
 					h=settings.itemHeight;
@@ -6898,7 +6898,7 @@ LRESULT CMenuContainer::OnLButtonDblClick( UINT uMsg, WPARAM wParam, LPARAM lPar
 	const MenuItem &item=m_Items[index];
 	if (item.id==MENU_SEPARATOR) return 0;
 	ClientToScreen(&pt);
-	if (s_bWin7Style && item.id==MENU_PROGRAMS) // only single clicks for All Programs
+	if (!s_bWin7Style && item.id==MENU_PROGRAMS) // only single clicks for All Programs
 		OnLButtonDown(WM_LBUTTONDOWN,wParam,lParam,bHandled);
 	else if (!bArrow && item.id!=MENU_APPS) // ignore double-click on the split arrow and Apps folder
 		ActivateItem(index,ACTIVATE_EXECUTE,&pt);
@@ -6963,7 +6963,7 @@ LRESULT CMenuContainer::OnLButtonUp( UINT uMsg, WPARAM wParam, LPARAM lParam, BO
 				return 0;
 			}
 		}
-		else if (s_bWin7Style && item.id==MENU_PROGRAMS && GetSettingInt(L"ProgramsStyle")==PROGRAMS_INLINE && m_SubShowTime && (int)(GetTickCount()-m_SubShowTime)<500)
+		else if (item.id==MENU_PROGRAMS && GetSettingInt(L"ProgramsStyle")==PROGRAMS_INLINE && m_SubShowTime && (int)(GetTickCount()-m_SubShowTime)<500)
 			return 0; // ignore clicks soon after the programs open
 		if (index!=m_Submenu)
 		{

@@ -2368,7 +2368,7 @@ void CMenuContainer::DrawBackground( HDC hdc, const RECT &drawRect )
 		{
 			if (s_Skin.Programs_icon.GetBitmap())
 			{
-				int iconX=itemRect.left+settings.iconPadding.left;
+				int iconX=itemRect.right-43;
 				int iconY=itemRect.top+settings.iconPadding.top+settings.iconTopOffset;
 				const MenuBitmap &icon=bHot?s_Skin.Programs_icon_selected:s_Skin.Programs_icon;
 				HGDIOBJ bmp0=SelectObject(hdc2,icon.GetBitmap());

@@ -2385,7 +2385,7 @@ bool MenuSkin::LoadSkin( HMODULE hMod, const wchar_t *variation, const wchar_t *
 		if (!LoadSkinColors(parser,L"Search_text_background",&Search_text_background,1,Main_background))
 			Search_text_background=GetSysColor(COLOR_WINDOW);
 
-		if (skinType==SKIN_TYPE_WIN7)
+		if (skinType!=SKIN_TYPE_WIN7)
 		{
 			memset(Main_bitmap_search_slices_X,0,sizeof(Main_bitmap_search_slices_X));
 			if (!LoadSkinBackground(hMod,parser,L"Main_bitmap_search",Main_bitmap_search,Main_background,Main_bitmap_search_slices_X+3,6,Main_bitmap_search_slices_Y,6,false))
